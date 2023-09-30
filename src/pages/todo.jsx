@@ -6,7 +6,22 @@ const Todo = () => {
   const [todoEdit, setTodoEdit] = useState(null);
 
   const handleSubmit = () => {
-    setTodo([...todo, inpTodo]);
+    if (todoEdit !== null) {
+      setTodo(todo.map((data, index) => (index === todoEdit ? inpTodo : data)));
+      setTodoEdit(null);
+    } else {
+      setTodo([...todo, inpTodo]);
+    }
+    setInpTodo("");
+  };
+
+  const handleDelete = (index) => {
+    setTodo(todo.filter((data, i) => i !== index));
+  };
+
+  const handleEdit = (index) => {
+    setInpTodo(todo[index]);
+    setTodoEdit(index);
   };
 
   return (
@@ -30,10 +45,16 @@ const Todo = () => {
         {todo.map((data, index) => (
           <p key={index}>
             {data}
-            <button className="bg-black m-1 hover:bg-gray-400 text-white rounded-md p-1">
+            <button
+              onClick={() => handleEdit(index)}
+              className="bg-black m-1 hover:bg-gray-400 text-white rounded-md p-1"
+            >
               Edit
             </button>
-            <button className="bg-red-600 m-1 hover:bg-red-700 text-white rounded-md p-1">
+            <button
+              onClick={() => handleDelete(index)}
+              className="bg-red-600 m-1 hover:bg-red-700 text-white rounded-md p-1"
+            >
               Delete
             </button>
           </p>
